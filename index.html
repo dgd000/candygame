@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CandyGame - Sweet Casual Gaming Experience</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              candy: {
+                pink: '#FF69B4',
+                purple: '#9B6DFF',
+                blue: '#87CEEB',
+                yellow: '#FFD700',
+                orange: '#FFA500',
+                red: '#FF6B6B',
+              },
+            },
+            backgroundImage: {
+              'candy-pattern': "url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ff69b4\" fill-opacity=\"0.1\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')",
+            },
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-candy-pattern bg-white dark:bg-gray-900">
+    <!-- 加载指示器 -->
+    <div id="loading-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-gray-900">
+      <div class="text-center">
+        <div class="w-16 h-16 border-4 border-candy-pink border-t-candy-purple rounded-full animate-spin mx-auto mb-4"></div>
+        <p class="text-candy-purple font-bold" data-i18n="loading">Loading...</p>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md shadow-md fixed w-full z-50">
+        <nav class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="text-3xl font-bold bg-gradient-to-r from-candy-pink to-candy-purple text-transparent bg-clip-text">
+                CandyGame
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#featured" class="text-candy-purple dark:text-candy-pink hover:text-candy-pink font-medium">Featured Games</a>
+                <a href="#new" class="text-candy-purple dark:text-candy-pink hover:text-candy-pink font-medium">New Games</a>
+                <a href="#categories" class="text-candy-purple dark:text-candy-pink hover:text-candy-pink font-medium">Categories</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="darkModeToggle" class="p-2 rounded-full text-candy-purple dark:text-candy-pink">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                </button>
+                <button class="btn-candy">Play Now</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Game Playing Section -->
+    <section class="pt-24 pb-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col items-center justify-center mb-12">
+                <h2 class="section-title">Currently Playing</h2>
+                <div id="gameLoading" class="flex flex-col items-center justify-center p-8 bg-white/50 dark:bg-gray-800/50 rounded-2xl border-4 border-dashed border-candy-pink/20 hidden w-full max-w-4xl">
+                    <div class="w-16 h-16 border-4 border-candy-pink border-t-candy-purple rounded-full animate-spin mb-4"></div>
+                    <p class="text-xl font-bold text-candy-purple dark:text-candy-pink">Loading game...</p>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mt-2">Please wait, the excitement is coming</p>
+                </div>
+                <div class="relative w-full max-w-4xl">
+                    <iframe 
+                        id="gameFrame"
+                        src="about:blank"
+                        class="game-frame hidden"
+                        allowfullscreen
+                    ></iframe>
+                    <button 
+                        id="fullscreenBtn" 
+                        class="absolute top-4 right-4 bg-candy-purple/80 hover:bg-candy-purple text-white p-2 rounded-lg shadow-lg hidden z-10"
+                        title="Fullscreen/Exit Fullscreen"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 0h-4m4 0l-5-5" />
+                        </svg>
+                    </button>
+                </div>
+                <div id="gamePrompt" class="text-center p-12 bg-white/50 dark:bg-gray-800/50 rounded-2xl border-4 border-dashed border-candy-pink/20">
+                    <h3 class="text-2xl font-bold text-candy-purple dark:text-candy-pink mb-4">Choose a Game to Play!</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Select from our collection of sweet casual games below</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Games -->
+    <section id="featured" class="py-16 bg-gradient-to-b from-white/50 to-candy-pink/10 dark:from-gray-900 dark:to-candy-purple/10">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title">Featured Games</h2>
+            
+            <!-- 游戏过滤器 -->
+            <div class="container mx-auto px-4 mb-8">
+              <div class="bg-white/70 dark:bg-gray-800/70 backdrop-blur-md p-4 rounded-xl shadow-sm">
+                <div class="flex flex-wrap gap-4 items-center">
+                  <div class="font-medium text-candy-purple dark:text-candy-pink">Filter:</div>
+                  
+                  <select id="categoryFilter" class="bg-white/70 dark:bg-gray-700 border border-candy-pink/20 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-candy-pink">
+                    <option value="">All Categories</option>
+                    <!-- Categories will be dynamically added through JavaScript -->
+                  </select>
+                  
+                  <select id="difficultyFilter" class="bg-white/70 dark:bg-gray-700 border border-candy-pink/20 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-candy-pink">
+                    <option value="">All Difficulties</option>
+                    <!-- Difficulty options will be dynamically added through JavaScript -->
+                  </select>
+                  
+                  <select id="durationFilter" class="bg-white/70 dark:bg-gray-700 border border-candy-pink/20 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-candy-pink">
+                    <option value="">All Durations</option>
+                    <!-- Duration options will be dynamically added through JavaScript -->
+                  </select>
+                  
+                  <div class="ml-auto">
+                    <button id="applyFilter" class="btn-candy-sm">Apply Filter</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div id="featuredGames" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                <!-- 游戏卡片将通过JavaScript动态添加 -->
+            </div>
+        </div>
+    </section>
+
+    <!-- New Games Section -->
+    <section id="new" class="py-16 bg-gradient-to-b from-white/50 to-candy-blue/10 dark:from-gray-900 dark:to-candy-blue/20">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title">New Games</h2>
+            
+            <div id="newGames" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                <!-- 新游戏卡片将通过JavaScript动态添加 -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section id="categories" class="py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title">Game Categories</h2>
+            
+            <!-- 游戏类型分类 -->
+            <div class="mb-12">
+              <h3 class="text-2xl font-bold text-candy-purple dark:text-candy-pink mb-6">By Type</h3>
+              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <div class="bg-candy-pink/10 dark:bg-candy-pink/20 p-4 rounded-2xl text-center hover:bg-candy-pink/20 dark:hover:bg-candy-pink/30 transition-colors cursor-pointer">
+                  <div class="text-3xl mb-2">🧩</div>
+                  <h3 class="font-bold text-candy-purple dark:text-candy-pink">Puzzle</h3>
+                </div>
+                <div class="bg-candy-purple/10 dark:bg-candy-purple/20 p-4 rounded-2xl text-center hover:bg-candy-purple/20 dark:hover:bg-candy-purple/30 transition-colors cursor-pointer">
+                  <div class="text-3xl mb-2">🎮</div>
+                  <h3 class="font-bold text-candy-purple dark:text-candy-pink">Arcade</h3>
+                </div>
+                <div class="bg-candy-blue/10 dark:bg-candy-blue/20 p-4 rounded-2xl text-center hover:bg-candy-blue/20 dark:hover:bg-candy-blue/30 transition-colors cursor-pointer">
+                  <div class="text-3xl mb-2">🧠</div>
+                  <h3 class="font-bold text-candy-purple dark:text-candy-pink">Memory</h3>
+                </div>
+                <div class="bg-candy-yellow/10 dark:bg-candy-yellow/20 p-4 rounded-2xl text-center hover:bg-candy-yellow/20 dark:hover:bg-candy-yellow/30 transition-colors cursor-pointer">
+                  <div class="text-3xl mb-2">⏰</div>
+                  <h3 class="font-bold text-candy-purple dark:text-candy-pink">Time Management</h3>
+                </div>
+                <div class="bg-candy-orange/10 dark:bg-candy-orange/20 p-4 rounded-2xl text-center hover:bg-candy-orange/20 dark:hover:bg-candy-orange/30 transition-colors cursor-pointer">
+                  <div class="text-3xl mb-2">🏎️</div>
+                  <h3 class="font-bold text-candy-purple dark:text-candy-pink">Racing</h3>
+                </div>
+                <div class="bg-candy-red/10 dark:bg-candy-red/20 p-4 rounded-2xl text-center hover:bg-candy-red/20 dark:hover:bg-candy-red/30 transition-colors cursor-pointer">
+                  <div class="text-3xl mb-2">🎯</div>
+                  <h3 class="font-bold text-candy-purple dark:text-candy-pink">Shooting</h3>
+                </div>
+              </div>
+            </div>
+            
+            <!-- 游戏时长分类 -->
+            <div class="mb-12">
+              <h3 class="text-2xl font-bold text-candy-purple dark:text-candy-pink mb-6">By Duration</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="bg-gradient-to-r from-candy-pink/10 to-candy-purple/10 dark:from-candy-pink/20 dark:to-candy-purple/20 p-6 rounded-2xl text-center hover:from-candy-pink/20 hover:to-candy-purple/20 dark:hover:from-candy-pink/30 dark:hover:to-candy-purple/30 transition-colors cursor-pointer">
+                  <div class="text-3xl mb-2">⚡</div>
+                  <h3 class="font-bold text-candy-purple dark:text-candy-pink">Quick Games (3 minutes)</h3>
+                </div>
+                <div class="bg-gradient-to-r from-candy-blue/10 to-candy-yellow/10 dark:from-candy-blue/20 dark:to-candy-yellow/20 p-6 rounded-2xl text-center hover:from-candy-blue/20 hover:to-candy-yellow/20 dark:hover:from-candy-blue/30 dark:hover:to-candy-yellow/30 transition-colors cursor-pointer">
+                  <div class="text-3xl mb-2">🕑</div>
+                  <h3 class="font-bold text-candy-purple dark:text-candy-pink">Medium Length (5-15 minutes)</h3>
+                </div>
+                <div class="bg-gradient-to-r from-candy-purple/10 to-candy-red/10 dark:from-candy-purple/20 dark:to-candy-red/20 p-6 rounded-2xl text-center hover:from-candy-purple/20 hover:to-candy-red/20 dark:hover:from-candy-purple/30 dark:hover:to-candy-red/30 transition-colors cursor-pointer">
+                  <div class="text-3xl mb-2">🏆</div>
+                  <h3 class="font-bold text-candy-purple dark:text-candy-pink">Deep Games (15+ minutes)</h3>
+                </div>
+              </div>
+            </div>
+            
+            <!-- 游戏难度分类 -->
+            <div>
+              <h3 class="text-2xl font-bold text-candy-purple dark:text-candy-pink mb-6">By Difficulty</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                <div class="bg-green-100 dark:bg-green-900/40 p-6 rounded-2xl text-center hover:bg-green-200 dark:hover:bg-green-900/60 transition-colors cursor-pointer">
+                  <div class="text-3xl mb-2">🍬</div>
+                  <h3 class="font-bold text-green-700 dark:text-green-400">Easy</h3>
+                  <p class="text-sm text-green-600 dark:text-green-300">Suitable for everyone</p>
+                </div>
+                <div class="bg-blue-100 dark:bg-blue-900/40 p-6 rounded-2xl text-center hover:bg-blue-200 dark:hover:bg-blue-900/60 transition-colors cursor-pointer">
+                  <div class="text-3xl mb-2">🍭</div>
+                  <h3 class="font-bold text-blue-700 dark:text-blue-400">Normal</h3>
+                  <p class="text-sm text-blue-600 dark:text-blue-300">Requires some skill</p>
+                </div>
+                <div class="bg-orange-100 dark:bg-orange-900/40 p-6 rounded-2xl text-center hover:bg-orange-200 dark:hover:bg-orange-900/60 transition-colors cursor-pointer">
+                  <div class="text-3xl mb-2">🧁</div>
+                  <h3 class="font-bold text-orange-700 dark:text-orange-400">Challenging</h3>
+                  <p class="text-sm text-orange-600 dark:text-orange-300">Requires proficient skills</p>
+                </div>
+                <div class="bg-red-100 dark:bg-red-900/40 p-6 rounded-2xl text-center hover:bg-red-200 dark:hover:bg-red-900/60 transition-colors cursor-pointer">
+                  <div class="text-3xl mb-2">🎂</div>
+                  <h3 class="font-bold text-red-700 dark:text-red-400">Expert</h3>
+                  <p class="text-sm text-red-600 dark:text-red-300">Tests your limits</p>
+                </div>
+              </div>
+            </div>
+          </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gradient-to-b from-candy-purple to-candy-pink text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-2xl font-bold mb-4">CandyGame</h4>
+                    <p class="text-white/80">Your sweet escape into casual gaming fun!</p>
+                </div>
+                <div>
+                    <h4 class="text-xl font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#featured" class="text-white/80 hover:text-white">Featured Games</a></li>
+                        <li><a href="#new" class="text-white/80 hover:text-white">New Games</a></li>
+                        <li><a href="#categories" class="text-white/80 hover:text-white">Categories</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xl font-bold mb-4">Support</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-white/80 hover:text-white">Help Center</a></li>
+                        <li><a href="#" class="text-white/80 hover:text-white">Privacy Policy</a></li>
+                        <li><a href="#" class="text-white/80 hover:text-white">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xl font-bold mb-4">Contact</h4>
+                    <p class="text-white/80">Email: mengma7878@gmail.com</p>
+                </div>
+            </div>
+            <div class="border-t border-white/20 mt-8 pt-8 text-center">
+                <p class="text-white/80">&copy; 2025 CandyGame. All rights reserved. Created by Sun Yifu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 全局游戏数据
+        let gamesData = {
+          "games": [
+          {
+              "id": "kings-queens-match2",
+              "title": "Kings and Queens Match 2",
+              "description": "Lead a royal adventure through 2500+ magical levels and gem matching gameplay, with gorgeous visuals and powerful royal bombs to unlock hidden treasures!",
+              "image": "https://img.gamedistribution.com/33c4942945a2451189610f4effdda4eb-512x384.jpg",
+              "url": "https://html5.gamedistribution.com/33c4942945a2451189610f4effdda4eb/?gd_sdk_referrer_url=https://gamedistribution.com/games/kings-and-queens-match-2/",
+              "rating": 4.7,
+              "category": "Puzzle",
+              "difficulty": "Normal",
+              "duration": "5-15 minutes",
+              "featured": true,
+              "new": false
+            },
+            {
+              "id": "garden-tales-mahjong2",
+              "title": "Garden Tales Mahjong 2",
+              "description": "Combining match-3 garden themes with 250+ unique puzzle layouts, unlock new levels through quick mode and chapter mode for a progressive puzzle adventure experience!",
+              "image": "https://img.gamedistribution.com/090cd83a141d4968ba08fe76b167e968-512x384.jpg",
+              "url": "https://html5.gamedistribution.com/090cd83a141d4968ba08fe76b167e968/?gd_sdk_referrer_url=https://gamedistribution.com/games/garden-tales-mahjong-2/",
+              "rating": 4.7,
+              "category": "Puzzle",
+              "difficulty": "Normal",
+              "duration": "3-5 minutes",
+              "featured": true,
+              "new": false
+            },
+            {
+              "id": "grand-vegas-crime",
+              "title": "Grand Vegas Crime",
+              "description": "An open world crime action game based on Las Vegas, where players take on the role of ambitious gangsters, building an underground empire through high-octane car chases, gang shootouts, and criminal missions!",
+              "image": "https://img.gamedistribution.com/828864726be944c2bff67fa68d505e96-512x384.jpg",
+              "url": "https://html5.gamedistribution.com/828864726be944c2bff67fa68d505e96/?gd_sdk_referrer_url=https://gamedistribution.com/games/gta:-grand-vegas-crime/",
+              "rating": 4.8,
+              "category": "Arcade",
+              "difficulty": "Challenging",
+              "duration": "5-15 minutes",
+              "featured": true,
+              "new": false
+            },
+            {
+              "id": "gt-drift-most-wanted",
+              "title": "GT Drift Most Wanted",
+              "description": "A snow racing game centered around precise drifting, where players need to maneuver various cars with different characteristics, avoiding obstacles while hitting snowbanks to complete level challenges, advancing to become track masters with drifting skills!",
+              "image": "https://img.gamedistribution.com/9d9a8dd7cc08456f85619c95c39895b8-512x384.jpg",
+              "url": "https://html5.gamedistribution.com/9d9a8dd7cc08456f85619c95c39895b8/?gd_sdk_referrer_url=https://gamedistribution.com/games/gt-drift-most-wanted/",
+              "rating": 4.5,
+              "category": "Racing",
+              "difficulty": "Challenging",
+              "duration": "3 minutes",
+              "featured": true,
+              "new": true
+            },
+            {
+              "id": "bubble-shooter-free2",
+              "title": "Bubble Shooter FREE 2",
+              "description": "The authentic sequel to the classic bubble shooter, with an innovative 'bubble swap' strategy system, supporting unlimited timeless mode, where players precisely complete 3+ same-color elimination combinations by swapping dual-colored bubbles in the launcher, creating a more tactically deep elimination experience!",
+              "image": "https://img.gamedistribution.com/e070a105ee1944bab21795441760a839-512x384.jpeg",
+              "url": "https://html5.gamedistribution.com/e070a105ee1944bab21795441760a839/?gd_sdk_referrer_url=https://gamedistribution.com/games/bubble-shooter-free-2/",
+              "rating": 4.7,
+              "category": "Shooting",
+              "difficulty": "Easy",
+              "duration": "5 minutes",
+              "featured": true,
+              "new": false
+            },
+            {
+              "id": "burger-cafe",
+              "title": "Burger Cafe",
+              "description": "An immersive burger restaurant simulation management game where players start from scratch to master the entire cooking process from frying meat to baking patties and secret sauces!",
+              "image": "https://img.gamedistribution.com/53e7add4f6a74aeb90652e008b35e3b4-512x384.jpeg",
+              "url": "https://html5.gamedistribution.com/53e7add4f6a74aeb90652e008b35e3b4/?gd_sdk_referrer_url=https://gamedistribution.com/games/burger-cafe-cooking-games-for-kids/",
+              "rating": 4.6,
+              "category": "Time Management",
+              "difficulty": "Easy",
+              "duration": "3 minutes",
+              "featured": true,
+              "new": true
+            },
+            {
+              "id": "falling-blocks-puzzle",
+              "title": "Falling Blocks Puzzle",
+              "description": "Players need to arrange falling gem blocks in real time, scoring by eliminating full rows, engaging in a battle of speed and strategy as the stack approaches the top!",
+              "image": "https://img.gamedistribution.com/d1a3ec041f214fd193f9191171b56e5e-512x384.jpg",
+              "url": "https://html5.gamedistribution.com/d1a3ec041f214fd193f9191171b56e5e/?gd_sdk_referrer_url=https://gamedistribution.com/games/falling-blocks-puzzle/",
+              "rating": 4.7,
+              "category": "Puzzle",
+              "difficulty": "Normal",
+              "duration": "5-15 minutes",
+              "featured": true,
+              "new": true
+            }
+          ],
+          "categories": [
+            "Puzzle",
+            "Arcade",
+            "Memory",
+            "Time Management",
+            "Racing",
+            "Shooting",
+            "Idle"
+          ],
+          "difficulties": [
+            "Easy",
+            "Normal",
+            "Challenging",
+            "Expert"
+          ],
+          "durations": [
+            "3 minutes",
+            "5 minutes",
+            "5-15 minutes",
+            "15+ minutes"
+          ]
+        };
+        let filteredGames = [];
+        
+        // 加载游戏函数
+        function loadGame(gameUrl) {
+            const frame = document.getElementById('gameFrame');
+            const prompt = document.getElementById('gamePrompt');
+            const loading = document.getElementById('gameLoading');
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
+            
+            // 隐藏提示，显示加载指示器
+            prompt.classList.add('hidden');
+            loading.classList.remove('hidden');
+            frame.classList.add('hidden');
+            fullscreenBtn.classList.add('hidden');
+            
+            // 设置iframe的load事件
+            frame.onload = function() {
+                // 游戏加载完成，隐藏加载指示器，显示游戏和全屏按钮
+                loading.classList.add('hidden');
+                frame.classList.remove('hidden');
+                fullscreenBtn.classList.remove('hidden');
+            };
+            
+            // 设置iframe的error事件
+            frame.onerror = function() {
+                alert('游戏加载失败，请重试');
+                loading.classList.add('hidden');
+                prompt.classList.remove('hidden');
+                fullscreenBtn.classList.add('hidden');
+            };
+            
+            // 设置超时保护，防止长时间加载
+            const loadTimeout = setTimeout(() => {
+                if (loading.classList.contains('hidden') === false) {
+                    // 如果5秒后仍在加载，也显示游戏（可能已加载但未触发onload）
+                    loading.classList.add('hidden');
+                    frame.classList.remove('hidden');
+                    fullscreenBtn.classList.remove('hidden');
+                }
+            }, 5000);
+            
+            // 设置游戏URL并滚动到游戏区域
+            frame.src = gameUrl;
+            loading.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        // 初始化应用
+        async function initApp() {
+            try {
+                filteredGames = gamesData.games;
+                
+                // 填充过滤器
+                populateFilters();
+                
+                // 渲染游戏卡片
+                renderGames();
+                
+                // 设置过滤事件监听器
+                document.getElementById('applyFilter').addEventListener('click', filterGames);
+                
+                // 页面加载完成，隐藏加载指示器
+                hideLoadingScreen();
+            } catch (error) {
+                console.error('初始化应用失败:', error);
+                alert('加载游戏数据时出错，请刷新页面重试。');
+            }
+        }
+        
+        // 填充过滤器选项
+        function populateFilters() {
+            // 分类过滤器
+            const categoryFilter = document.getElementById('categoryFilter');
+            gamesData.categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                categoryFilter.appendChild(option);
+            });
+            
+            // 难度过滤器
+            const difficultyFilter = document.getElementById('difficultyFilter');
+            gamesData.difficulties.forEach(difficulty => {
+                const option = document.createElement('option');
+                option.value = difficulty;
+                option.textContent = difficulty;
+                difficultyFilter.appendChild(option);
+            });
+            
+            // 时长过滤器
+            const durationFilter = document.getElementById('durationFilter');
+            gamesData.durations.forEach(duration => {
+                const option = document.createElement('option');
+                option.value = duration;
+                option.textContent = duration;
+                durationFilter.appendChild(option);
+            });
+        }
+        
+        // 根据过滤条件筛选游戏
+        function filterGames() {
+            const categoryValue = document.getElementById('categoryFilter').value;
+            const difficultyValue = document.getElementById('difficultyFilter').value;
+            const durationValue = document.getElementById('durationFilter').value;
+            
+            filteredGames = gamesData.games.filter(game => {
+                let matchCategory = true;
+                let matchDifficulty = true;
+                let matchDuration = true;
+                
+                if (categoryValue) {
+                    matchCategory = game.category === categoryValue;
+                }
+                
+                if (difficultyValue) {
+                    matchDifficulty = game.difficulty === difficultyValue;
+                }
+                
+                if (durationValue) {
+                    matchDuration = game.duration === durationValue;
+                }
+                
+                return matchCategory && matchDifficulty && matchDuration;
+            });
+            
+            renderGames();
+        }
+        
+        // 渲染游戏卡片
+        function renderGames() {
+            // 渲染精选游戏
+            const featuredContainer = document.getElementById('featuredGames');
+            featuredContainer.innerHTML = '';
+            
+            const featuredGames = filteredGames.filter(game => game.featured);
+            featuredGames.forEach(game => {
+                featuredContainer.appendChild(createGameCard(game));
+            });
+            
+            // 渲染新游戏
+            const newContainer = document.getElementById('newGames');
+            newContainer.innerHTML = '';
+            
+            const newGames = filteredGames.filter(game => game.new);
+            newGames.forEach(game => {
+                newContainer.appendChild(createGameCard(game));
+            });
+        }
+        
+        // 创建游戏卡片
+        function createGameCard(game) {
+            const card = document.createElement('div');
+            card.className = 'game-card cursor-pointer';
+            card.onclick = function() {
+                loadGame(game.url);
+            };
+            
+            // 根据难度设置标签颜色
+            let difficultyColor = 'bg-green-500'; // 默认简单
+            if (game.difficulty === 'Normal') {
+                difficultyColor = 'bg-yellow-500';
+            } else if (game.difficulty === 'Challenging') {
+                difficultyColor = 'bg-orange-500';
+            } else if (game.difficulty === 'Expert') {
+                difficultyColor = 'bg-red-500';
+            }
+            
+            // 根据时长设置标签颜色
+            let durationColor = 'bg-blue-500'; // 默认短时间
+            if (game.duration === '5-15 minutes') {
+                durationColor = 'bg-indigo-500';
+            } else if (game.duration === '15+ minutes') {
+                durationColor = 'bg-purple-500';
+            }
+            
+            card.innerHTML = `
+                <div class="relative">
+                    <img src="${game.image}" alt="${game.title}" class="w-full h-48 object-cover">
+                    <div class="absolute top-2 right-2 flex gap-1">
+                        <span class="${difficultyColor} text-white text-xs px-2 py-1 rounded-full">${game.difficulty}</span>
+                        <span class="${durationColor} text-white text-xs px-2 py-1 rounded-full">${game.duration}</span>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-xl font-bold text-candy-purple dark:text-candy-pink mb-2">${game.title}</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">${game.description}</p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center text-sm text-candy-pink">
+                            <span>★ ${game.rating}</span>
+                            <span class="mx-2">•</span>
+                            <span>${game.category}</span>
+                        </div>
+                        <button class="text-xs bg-candy-purple/10 hover:bg-candy-purple/20 text-candy-purple dark:text-candy-pink px-2 py-1 rounded-full">收藏</button>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+        
+        // 隐藏加载指示器
+        function hideLoadingScreen() {
+            const loadingScreen = document.getElementById('loading-screen');
+            if (loadingScreen) {
+                loadingScreen.classList.add('opacity-0');
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            }
+        }
+
+        // 深色模式切换
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        if (darkModeToggle) {
+          darkModeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            localStorage.setItem('darkMode', isDark ? 'dark' : 'light');
+            updateDarkModeIcon(isDark);
+          });
+          
+          // 检查用户之前的偏好
+          const darkModePreference = localStorage.getItem('darkMode');
+          if (darkModePreference === 'dark') {
+            document.documentElement.classList.add('dark');
+            updateDarkModeIcon(true);
+          }
+        }
+
+        function updateDarkModeIcon(isDark) {
+          const icon = darkModeToggle.querySelector('svg');
+          if (isDark) {
+            icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />';
+          } else {
+            icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />';
+          }
+        }
+
+        // 游戏预加载功能
+        function setupGamePreload() {
+            const gameCards = document.querySelectorAll('.game-card');
+            gameCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    const gameUrl = card.getAttribute('onclick').toString().match(/'(.*?)'/)?.[1];
+                    if (gameUrl) {
+                        const preloadLink = document.createElement('link');
+                        preloadLink.rel = 'preload';
+                        preloadLink.as = 'document';
+                        preloadLink.href = gameUrl;
+                        document.head.appendChild(preloadLink);
+                    }
+                });
+            });
+        }
+
+        // 页面加载后初始化应用
+        document.addEventListener('DOMContentLoaded', () => {
+            initApp();
+            setupGamePreload();
+            setupFullscreenButton();
+        });
+        
+        // 设置全屏按钮功能
+        function setupFullscreenButton() {
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
+            const gameFrame = document.getElementById('gameFrame');
+            
+            fullscreenBtn.addEventListener('click', () => {
+                toggleFullscreen(gameFrame);
+            });
+        }
+        
+        // 切换全屏状态
+        function toggleFullscreen(element) {
+            if (!document.fullscreenElement && 
+                !document.mozFullScreenElement && 
+                !document.webkitFullscreenElement && 
+                !document.msFullscreenElement) {
+                // 进入全屏
+                if (element.requestFullscreen) {
+                    element.requestFullscreen();
+                } else if (element.msRequestFullscreen) {
+                    element.msRequestFullscreen();
+                } else if (element.mozRequestFullScreen) {
+                    element.mozRequestFullScreen();
+                } else if (element.webkitRequestFullscreen) {
+                    element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+                }
+            } else {
+                // 退出全屏
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+            }
+        }
+
+        // 添加收藏功能
+        document.addEventListener('click', (event) => {
+            const favoriteBtn = event.target.closest('button:not(#applyFilter):not(#darkModeToggle):not(#fullscreenBtn)');
+            if (favoriteBtn) {
+                event.stopPropagation();
+                favoriteBtn.textContent = favoriteBtn.textContent === '收藏' ? '已收藏' : '收藏';
+                favoriteBtn.classList.toggle('bg-candy-pink/20');
+            }
+        });
+
+        // 设置语言切换器
+        function setupLanguageSwitcher() {
+            const langSwitcher = document.getElementById('langSwitcher');
+            const langDropdown = document.getElementById('langDropdown');
+            const langButtons = document.querySelectorAll('#langDropdown button');
+            
+            // 检查是否有保存的语言偏好，默认为英文
+            const savedLang = localStorage.getItem('language') || 'en';
+            changeLanguage(savedLang);
+            
+            // 切换下拉菜单显示
+            langSwitcher.addEventListener('click', () => {
+                langDropdown.classList.toggle('hidden');
+            });
+            
+            // 点击页面其他地方关闭下拉菜单
+            document.addEventListener('click', (event) => {
+                if (!langSwitcher.contains(event.target) && !langDropdown.contains(event.target)) {
+                    langDropdown.classList.add('hidden');
+                }
+            });
+            
+            // 语言选择
+            langButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const lang = button.getAttribute('data-lang');
+                    changeLanguage(lang);
+                    langDropdown.classList.add('hidden');
+                });
+            });
+        }
+
+        // 切换语言
+        function changeLanguage(lang) {
+            // 保存语言选择
+            localStorage.setItem('language', lang);
+            
+            // 更新当前语言显示
+            document.getElementById('currentLang').textContent = {
+                'zh': '中文',
+                'en': 'English',
+                'ja': '日本語',
+                'ko': '한국어'
+            }[lang];
+            
+            // 更新页面上所有带有data-i18n属性的元素
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18nData[lang] && i18nData[lang][key]) {
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                        el.placeholder = i18nData[lang][key];
+                    } else {
+                        el.textContent = i18nData[lang][key];
+                    }
+                }
+            });
+            
+            // 更新游戏数据中的翻译文本
+            updateGameDataTranslations(lang);
+            
+            // 重新渲染游戏卡片以更新语言
+            renderGames();
+        }
+    </script>
+</body>
+</html>

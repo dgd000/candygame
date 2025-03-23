@@ -1,0 +1,155 @@
+{
+  "games": [
+    {
+      "id": "candy-crush",
+      "title": "Candy Crush",
+      "description": "Match candies to create sweet combinations!",
+      "image": "https://placehold.co/400x300/FFB6C1/fff?text=Candy+Crush",
+      "url": "https://example.com/game1",
+      "rating": 4.8,
+      "category": "益智",
+      "difficulty": "简单",
+      "duration": "3分钟",
+      "featured": true,
+      "new": false
+    },
+    {
+      "id": "bubble-pop",
+      "title": "Bubble Pop",
+      "description": "Pop colorful bubbles in this addictive puzzle game!",
+      "image": "https://placehold.co/400x300/DDA0DD/fff?text=Bubble+Pop",
+      "url": "https://example.com/game2",
+      "rating": 4.7,
+      "category": "街机",
+      "difficulty": "普通",
+      "duration": "5分钟",
+      "featured": true,
+      "new": false
+    },
+    {
+      "id": "sweet-match",
+      "title": "Sweet Match",
+      "description": "Match pairs of sweets in this memory game!",
+      "image": "https://placehold.co/400x300/87CEEB/fff?text=Sweet+Match",
+      "url": "https://example.com/game3",
+      "rating": 4.6,
+      "category": "记忆",
+      "difficulty": "简单",
+      "duration": "3分钟",
+      "featured": true,
+      "new": true
+    },
+    {
+      "id": "cookie-clicker",
+      "title": "Cookie Clicker",
+      "description": "Click cookies to build your sweet empire!",
+      "image": "https://placehold.co/400x300/FFD700/fff?text=Cookie+Clicker",
+      "url": "https://example.com/game4",
+      "rating": 4.9,
+      "category": "放置",
+      "difficulty": "挑战",
+      "duration": "15分钟+",
+      "featured": true,
+      "new": false
+    },
+    {
+      "id": "jelly-jump",
+      "title": "Jelly Jump",
+      "description": "Help the jelly character jump through obstacles!",
+      "image": "https://placehold.co/400x300/FFA500/fff?text=Jelly+Jump",
+      "url": "https://example.com/game5",
+      "rating": 4.5,
+      "category": "街机",
+      "difficulty": "普通",
+      "duration": "5分钟",
+      "featured": false,
+      "new": true
+    },
+    {
+      "id": "sugar-rush",
+      "title": "Sugar Rush",
+      "description": "Race through candy-themed tracks!",
+      "image": "https://placehold.co/400x300/FF6B6B/fff?text=Sugar+Rush",
+      "url": "https://example.com/game6",
+      "rating": 4.4,
+      "category": "竞速",
+      "difficulty": "挑战",
+      "duration": "5-15分钟",
+      "featured": false,
+      "new": true
+    },
+    {
+      "id": "candy-shooter",
+      "title": "Candy Shooter",
+      "description": "Shoot candies to match colors and clear the board!",
+      "image": "https://placehold.co/400x300/9B6DFF/fff?text=Candy+Shooter",
+      "url": "https://example.com/game7",
+      "rating": 4.3,
+      "category": "射击",
+      "difficulty": "普通",
+      "duration": "5分钟",
+      "featured": false,
+      "new": true
+    },
+    {
+      "id": "cake-maker",
+      "title": "Cake Maker",
+      "description": "Create and decorate delicious virtual cakes!",
+      "image": "https://placehold.co/400x300/87CEEB/fff?text=Cake+Maker",
+      "url": "https://example.com/game8",
+      "rating": 4.7,
+      "category": "时间管理",
+      "difficulty": "简单",
+      "duration": "5-15分钟",
+      "featured": false,
+      "new": true
+    },
+    {
+      "id": "candy-master",
+      "title": "Candy Master",
+      "description": "Test your skills with challenging candy puzzles!",
+      "image": "https://placehold.co/400x300/FFB6C1/fff?text=Candy+Master",
+      "url": "https://example.com/game9",
+      "rating": 4.8,
+      "category": "益智",
+      "difficulty": "专家",
+      "duration": "15分钟+",
+      "featured": false,
+      "new": false
+    },
+    {
+      "id": "lollipop-adventure",
+      "title": "Lollipop Adventure",
+      "description": "Join Lollipop on a sweet adventure through Candy Land!",
+      "image": "https://placehold.co/400x300/FFD700/fff?text=Lollipop+Adventure",
+      "url": "https://example.com/game10",
+      "rating": 4.5,
+      "category": "街机",
+      "difficulty": "普通",
+      "duration": "5-15分钟",
+      "featured": false,
+      "new": true
+    }
+  ],
+  "categories": [
+    "益智",
+    "街机",
+    "记忆",
+    "时间管理",
+    "竞速",
+    "射击",
+    "放置"
+  ],
+  "difficulties": [
+    "简单",
+    "普通",
+    "挑战",
+    "专家"
+  ],
+  "durations": [
+    "3分钟",
+    "5分钟",
+    "5-15分钟",
+    "15分钟+"
+  ]
+} 

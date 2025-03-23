@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .game-card {
+    @apply bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:transform hover:scale-105 hover:shadow-xl border-4 border-candy-pink/20;
+  }
+  
+  .btn-candy {
+    @apply bg-gradient-to-r from-candy-pink to-candy-purple text-white px-6 py-3 rounded-full font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:transform hover:scale-105;
+  }
+
+  .section-title {
+    @apply text-4xl font-bold text-center mb-12 text-candy-purple;
+  }
+  
+  .btn-candy-sm {
+    @apply bg-gradient-to-r from-candy-pink to-candy-purple text-white px-4 py-2 text-sm rounded-full font-medium shadow hover:shadow-md transition-all duration-300;
+  }
+}
+
+.game-frame {
+  aspect-ratio: 16/9;
+  width: 100%;
+  max-width: 1200px;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 4px solid rgba(255, 105, 180, 0.2);
+}
+
+#loading-screen {
+  transition: opacity 0.5s ease-out;
+}
+
+/* 这些Tailwind指令在本地直接打开时不会被处理，所以我们保留它们但需要添加实际CSS */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 游戏卡片样式 */
+.game-card {
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: all 0.3s;
+  border: 4px solid rgba(255, 105, 180, 0.2);
+}
+
+.game-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* 按钮样式 */
+.btn-candy {
+  background-image: linear-gradient(to right, #FF69B4, #9B6DFF);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: bold;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s;
+}
+
+.btn-candy:hover {
+  transform: scale(1.05);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.btn-candy-sm {
+  background-image: linear-gradient(to right, #FF69B4, #9B6DFF);
+  color: white;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s;
+}
+
+.btn-candy-sm:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* 标题样式 */
+.section-title {
+  font-size: 2.25rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 3rem;
+  color: #9B6DFF;
+}
+
+.dark .section-title {
+  color: #FF69B4;
+}
+
+/* 游戏框架 */
+.game-frame {
+  aspect-ratio: 16/9;
+  width: 100%;
+  max-width: 1200px;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 4px solid rgba(255, 105, 180, 0.2);
+}
+
+/* 加载屏幕 */
+#loading-screen {
+  transition: opacity 0.5s ease-out;
+}
